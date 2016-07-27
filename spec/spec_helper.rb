@@ -10,6 +10,7 @@ require 'rspec'
 require './app/models/link'
 require './app/app'
 require 'database_cleaner'
+require 'web_helper'
 
 RSpec.configure do |config|
   # Everything in this block runs once before all the tests run
