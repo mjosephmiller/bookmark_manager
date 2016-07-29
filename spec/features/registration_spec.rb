@@ -10,19 +10,26 @@ feature 'user sign up' do
   scenario 'user enters mismatching passwords' do
     expect { register(password_confirmation: 'wrong') }.not_to change(User, :count)
     expect(current_path).to eq('/user')
-    expect(page).to have_content('Passwords do not match')
+    expect(page).to have_content('Password does not match the confirmation')
   end
 
   scenario 'user needs to enter an email' do
     expect { register(email: '')}.not_to change(User, :count)
-    # expect(current_path).to eq('/user')
-    # expect(page).to have_content('You need to enter an email address')
+    expect(current_path).to eq('/user')
+    expect(page).to have_content('Email must not be blank')
   end
 
   scenario 'user needs to enter a valid email' do
     expect { register(email: 'invalid@gmail')}.not_to change(User, :count)
-    # expect(current_path).to eq('/user')
-    # expect(page).to have_content('You need to enter an email address')
+    expect(current_path).to eq('/user')
+    expect(page).to have_content('Email has an invalid format')
+  end
+
+  scenario 'user cannot sign up with a duplicate email' do
+    register
+    expect { register }.not_to change(User, :count)
+    expect(current_path).to eq('/user')
+    expect(page).to have_content('Email is already taken')
   end
 
   def register(email: 'user@user.com', password: 'user', password_confirmation: 'user')
