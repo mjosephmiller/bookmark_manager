@@ -19,6 +19,12 @@ feature 'user sign up' do
     # expect(page).to have_content('You need to enter an email address')
   end
 
+  scenario 'user needs to enter a valid email' do
+    expect { register(email: 'invalid@gmail')}.not_to change(User, :count)
+    # expect(current_path).to eq('/user')
+    # expect(page).to have_content('You need to enter an email address')
+  end
+
   def register(email: 'user@user.com', password: 'user', password_confirmation: 'user')
     visit '/user/new'
     fill_in 'email', :with => email
